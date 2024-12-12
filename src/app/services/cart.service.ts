@@ -9,9 +9,14 @@ export class CartService {
 
   cart = signal<Product[]>([]);
 
-  addToCart(product: Product) {
+  addToCart(product: Product): string | void {
+    if (product.stock > 0) {
     this.cart.set([...this.cart(), product]);
+    product.stock-=1;
   }
+  else {
+    return 'This item is out of stock!';
+  }}
 
   removeFromCart(productId: number) {
     this.cart.set(this.cart().filter((p) => p.id !== productId));
